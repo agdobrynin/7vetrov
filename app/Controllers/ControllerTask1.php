@@ -17,11 +17,6 @@ class ControllerTask1 extends Controller{
         $subject = self::Request("content");
         $matches = [];
         //[НАИМЕНОВАНИЕ_ТЕГА:описание]данные[/НАИМЕНОВАНИЕ_ТЕГА]
-        //<div[^<>]*class="entry"[^<>]*>(?<content>.*?)</div>
-        /*<([a-z]+) *[^/]*?>*/
-        //<(?:[^>=]|='[^']*'|=""[^""]*""|=[^'""][^\s>]*)*>
-        //<([A-Z][A-Z0-9]*)\b[^>]*>(.*?)</\1>
-        //"~\[(?:[^\]][^\s\]]*)*\]~siU";
         $pattern = "~\[([\w]*)\b[^\]]*>~siU";
         preg_match_all($pattern, $subject , $matches);
         $result1=$matches;
