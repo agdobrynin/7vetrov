@@ -43,12 +43,11 @@ class Db {
       return self::$instance::lastInsertId();
     }
 
-    public static function escape( $value ){
-        return \SQLite3::escapeString( $value );
-    }
-
-    public static function query( $sql )
+    public static function query( $sql , array $values = [] , array $driver_options = [] )
     {
-        return self::$instance->query( $sql );
+        $sth = self::$instance->prepare( $sql, $driver_options );
+        //':calories' => 150, ':colour' => 'red')
+        $sth->execute($values);
+        return $sth->fetchAll();
     }
 }

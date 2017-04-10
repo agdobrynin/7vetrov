@@ -2,6 +2,7 @@
 namespace Core;
 
 class View{
+
     private $ViewPath;
 
     public function __construct( $path = null )

@@ -14,4 +14,7 @@ return [
     '/task2' => 'ControllerTask2@index',
     //Страница задания 2 обработка
     '/task2/create' => 'ControllerTask2@create',
+
+    //Страница задания 3
+    '/task3' => 'ControllerTask3@reset'
 ];
