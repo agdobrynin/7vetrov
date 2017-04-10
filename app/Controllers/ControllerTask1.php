@@ -5,15 +5,17 @@ use Core\Controller as Controller;
 
 class ControllerTask1 extends Controller{
 
+    protected $title = "Задание #1";
+
     public function index()
     {
-        $title="Задание #1";
+        $title = $this->title;
         return self::View('task1.php', compact(["title"]));
     }
 
     public function create()
     {
-        $title="Задание #1";
+        $title = $this->title;
         $subject = self::Request("content");
         $matches = [];
         $result1 = [];

@@ -1,4 +1,4 @@
-<form action="/task1/calc" method="post">
+<form action="/task1/create" method="post">
     <fieldset>
         <div class="form-group">
           <label for="">Текст с тегами для разбора:</label>
