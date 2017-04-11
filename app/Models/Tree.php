@@ -17,44 +17,64 @@ class Tree extends Model{
      * @param integer $max_level максимально уровней вложенности
      * @param integer $min_child минимально потомков в узле
      * @param integer $max_child максимально потомков в узле
+     * @return integer количество сгенерированных элементов
      */
     public function CreateTable($max_level = 5 , $min_child=2, $max_child = 5)
     {
         //Удалить таблицу
-        DB::query("DROP TABLE ".$this->table);
+        DB::query("DROP TABLE IF EXISTS ".$this->table);
         //Создать таблицу id, parent_id, name
-        //для SqLite AUTOINCREMENT для MySQL AUTO_INCREMENT
-        /*
-        DB::CreateTable($this->table,[
-            'id'        =>['integer', true, true],
-            'parent_id' =>['integer'],
-            'name'      =>['varchar(255)']
-        ]);
-        */
-        if( DB::query("CREATE TABLE ".$this->table." (id INTEGER PRIMARY KEY AUTOINCREMENT, parent_id integer,name varchar(255))") === false ){
+        //для SqLite AUTOINCREMENT для MySQL
+        $SQL = "CREATE TABLE ".$this->table." (id INTEGER PRIMARY KEY %s, parent_id INTEGER, name VARCHAR(255))";
+        if( $this->getDriver() == "mysql" ){
+            $SQL = sprintf( $SQL , "AUTO_INCREMENT");
+        } elseif ($this->getDriver() == "sqlite") {
+            $SQL = sprintf( $SQL , "AUTOINCREMENT");;
+        }
+
+        if( DB::query($SQL) === false ){
             throw new \Exception("Ошибка создания таблицы ".$this->table. " [ ".DB::errorText()." ]");
         }
         //Паполнить рандомными значениями с помощью rand ( int $min , int $max )
-        return $this->GenetateTree( 0, $min_child, $max_child);
-        //Utils::RandString();
-
+        $this->GenerateChild( 0, $min_child, $max_child, 0, $max_level);
+        return DB::run("SELECT count(id) FROM ".$this->table)->fetchColumn();
     }
 
-    protected function GenetateTree( $parent_id=0, $min_child =2 , $max_cild = 5 )
+    /**
+     * Генерация дерева
+     * @param integer $parent_id родительский id
+     * @param integer $min_child минимальное кол-во детей
+     * @param integer $max_cild  максимальное кол-во детей
+     * @param integer $level     текущий уроверь (для рекурсии)
+     * @param integer $max_level максимально уровней
+     */
+    protected function GenerateChild( $parent_id=0, $min_child =2 , $max_cild = 5, $level = 0, $max_level = 3 )
     {
         $child = [];
         $count = rand($min_child, $max_cild);
         for($i=0; $i < $count; $i++){
             $child[]=[$parent_id, Utils::RandString()];
         }
-        //return json_encode($child);
-        # множественное исполнение подготовленных выражений
-        $stmt = DB::prepare("INSERT INTO ".$this->table."(parent_id, name) VALUES (?, ?)");
+        //множественное исполнение подготовленных выражений
+        $SQL = "INSERT INTO ".$this->table."(parent_id, name) VALUES (?, ?)";
+        $stmt = DB::prepare($SQL);
+        if( $stmt === false ){
+            throw new \Exception("Ошибка в запросе: ".$SQL." \n".DB::errorText());
+        }
+
         foreach ($child as $element){
             $stmt->execute($element);
+            if($level == $max_level) return true;
+            $level++;
+            $this->GenerateChild(DB::lastInsertId(), $min_child, $max_cild , $level , $max_level );
         }
-        // var_dump(DB::lastInsertId());
-
+        return true;
     }
 
+    public function GetTree($parent_id = 0)
+    {
+        $SQL = "SELECT * FROM ".$this->table." WHERE parent_id = ?";
+        $stmt = DB::prepare($SQL);
+        $stmt->execute($element);
+    }
 }

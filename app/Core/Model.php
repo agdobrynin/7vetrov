@@ -8,11 +8,8 @@ class Model extends Db{
 
     public function __construct( $id = null )
     {
+
         $this->id = $id;
     }
 
-    public function query()
-    {
-        # code...
-    }
 }

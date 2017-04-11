@@ -18,20 +18,21 @@ class ControllerTask3 extends Controller{
      * Создание таблицы и заполнение рандомными значениями
      * @return boolean
      */
-    public function reset()
+    public function resetTree()
     {
         $Tree = new Tree();
-        $res = $Tree->CreateTable(5 , 2, 7);
-        return $res;
+        //Создать таблицу 5 уровней, от 4 до 8 детей в узле
+        return $Tree->CreateTable(5 , 4, 8);
     }
 
     /**
-     * Получение дерева
+     * Получение дерево
      * @return object JSON
      */
-    public function tree()
+    public function getTree()
     {
-
+        $Tree = new Tree();
+        return $Tree->GetTree();
     }
 
 

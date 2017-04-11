@@ -5,7 +5,7 @@ return [
   //Путь к файлу роутов
   "routes" => __DIR__."/routes.php",
   //драйвер БД - конфигурация в conf/database.php
-  "db_driver" => "sqlite",
+  "db_driver" => "mysql",
   //Конфигурация коннекта к БД
   "db_connection" => [
       //для БД SQLite
@@ -15,10 +15,10 @@ return [
       //для БД MySQL
       "mysql" =>[
           "host"=>"127.0.0.1",
-          "db"=>"7vetrov",
-          "user"=>"7vetrov",
+          "db"=>"dev4",
+          "user"=>"homestead",
           "password"=>"secret",
-          "port" => "3306",
+          "port" => "33060",
           "charset" => "utf8"
       ]
   ]
