@@ -2,8 +2,8 @@
 // route и действие
 return [
 
-    //Главная страница
-    '/' => 'ControllerMain@index',
+    //Главная страница с использованием namespace
+    '/' => 'Controllers\\ControllerMain@index',
 
     //Страница задания 1
     '/task1' => 'ControllerTask1@index',

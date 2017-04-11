@@ -2,7 +2,7 @@
 namespace Controllers;
 
 use Core\Controller as Controller;
-use Core\Utils as Utils;
+use \Models\Tree;
 
 class ControllerTask3 extends Controller{
 
@@ -16,13 +16,13 @@ class ControllerTask3 extends Controller{
 
     /**
      * Создание таблицы и заполнение рандомными значениями
-     * @param integer $max_level максимально уровней вложенности
-     * @param integer $max_child максимально потомков в узле
      * @return boolean
      */
-    public function reset( $max_level = 5 , $max_child = 5 )
+    public function reset()
     {
-        return Utils::RandString();
+        $Tree = new Tree();
+        $res = $Tree->CreateTable(5 , 2, 7);
+        return $res;
     }
 
     /**

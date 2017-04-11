@@ -11,8 +11,8 @@ class App{
       protected $uri;
 
       protected $view;
+      
 
-      protected $db;
       /**
        *
        * @method __construct
@@ -22,7 +22,7 @@ class App{
       {
           $this->view = new View( $conf->ViewPath() );
           $this->request = array_merge($_POST, $_GET);
-          $this->db = Db::Init( $conf );
+          Db::Init( $conf );
       }
 
       /**
@@ -37,7 +37,9 @@ class App{
               $controller = strstr($calabel, '@', true);
               $method = substr(strrchr($calabel, "@"), 1);
               //$calabel = array( new $controller($this), $method );
-              $controller = '\\Controllers\\'.$controller;
+              if( strpos( $controller , '\\' ) === false ){
+                  $controller = '\\Controllers\\'.$controller;
+              }
               $calabel = array( new $controller($this) , $method );
           }
           $this->routes[$route]= $calabel;
