@@ -1,7 +1,7 @@
 function EmptyModal() {
-    $("#CalcModal .modal-title").text('');
-    $("#CalcModal .modal-body .code-style").html('');
-    $("#CalcModal .modal-body .alert-success").html('');
+    $("#Modal .modal-title").text('');
+    $("#Modal .modal-body .code-style").html('');
+    $("#Modal .modal-body .alert-success").html('');
 }
 
 $('.loadCalc').click(function(event) {
@@ -16,12 +16,9 @@ $('.loadCalc').click(function(event) {
             EmptyModal();
         },
         success: function(data) {
-            $("#CalcModal .modal-title").text(data.name);
-            /*
-            $("#CalcModal .modal-body .code-style").html(data.body);
-            $("#CalcModal .modal-body .alert-success").html(Calc.codes);
-            */
-            $("#CalcModal").modal('show');
+            $("#Modal .modal-title").text(data.title);
+            $("#Modal .modal-body").html(data.body);
+            $("#Modal").modal('show');
         },
         error: function(HttpRequest) {
             var txt;
@@ -41,9 +38,9 @@ $('.loadCalc').click(function(event) {
                         txt = "Ошибка выполнения AJAX запроса, код ответа=" + HttpRequest.status + ", строка ответа=" + HttpRequest.statusText;
                     }
             }
-            $("#CalcModal .modal-title").text('Ошибка');
-            $("#CalcModal .modal-body .code-style").html(txt);
-            $("#CalcModal").modal('show');
+            $("#Modal .modal-title").text('Ошибка');
+            $("#Modal .modal-body").html(txt);
+            $("#Modal").modal('show');
         },
         complete: function() {}
     });

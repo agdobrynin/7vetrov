@@ -16,23 +16,28 @@ class ControllerTask3 extends Controller{
 
     /**
      * Создание таблицы и заполнение рандомными значениями
-     * @return boolean
+     * @return object JSON
      */
-    public function resetTree()
+    public function reset()
     {
         $Tree = new Tree();
         //Создать таблицу 5 уровней, от 4 до 8 детей в узле
-        return $Tree->CreateTable(5 , 4, 8);
+        header('Content-Type: application/json');
+        return json_encode([
+            "title" => "Сообщение",
+            "body" => "Сгенерировано дерево c ".$Tree->CreateTable(5 , 4, 8)." элементами."
+        ]);
     }
 
     /**
      * Получение дерево
      * @return object JSON
      */
-    public function getTree()
+    public function tree()
     {
         $Tree = new Tree();
-        return $Tree->GetTree();
+        header('Content-Type: application/json');
+        return json_encode($Tree->GetTree());
     }
 
 

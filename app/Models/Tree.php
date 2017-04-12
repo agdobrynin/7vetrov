@@ -71,10 +71,61 @@ class Tree extends Model{
         return true;
     }
 
-    public function GetTree($parent_id = 0)
+    /*
+    $arr = array(
+      array('id'=>100, 'parentid'=>0, 'name'=>'a'),
+      array('id'=>101, 'parentid'=>100, 'name'=>'a'),
+      array('id'=>102, 'parentid'=>101, 'name'=>'a'),
+      array('id'=>103, 'parentid'=>101, 'name'=>'a'),
+    );
+
+    $new = array();
+    foreach ($arr as $a){
+        $new[$a['parentid']][] = $a;
+    }
+    $tree = createTree($new, array($arr[0]));
+    print_r($tree);
+
+    function createTree(&$list, $parent){
+        $tree = array();
+        foreach ($parent as $k=>$l){
+            if(isset($list[$l['id']])){
+                $l['children'] = createTree($list, $list[$l['id']]);
+            }
+            $tree[] = $l;
+        }
+        return $tree;
+    }
+    */
+
+    protected function GetAllElements(){
+        $SQL = "SELECT * FROM ".$this->table;
+        return DB::run($SQL)->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function GetTree($parent_id = 0, &$result = [] )
     {
+        print_r($this->GetAllElements());
+        return 0;
         $SQL = "SELECT * FROM ".$this->table." WHERE parent_id = ?";
-        $stmt = DB::prepare($SQL);
-        $stmt->execute($element);
+        $stmt = DB::run($SQL, [$parent_id]);
+        while ($row = $stmt->fetch(\PDO::FETCH_LAZY)){
+            print $row->parent_id." | ".$row->id."\n";
+            //array_push($new_list, $next['uid']);
+            //
+            if ($element['parent_id'] == $parentId) {
+                $children = buildTree($elements, $element['id']);
+                if ($children) {
+                    $element['children'] = $children;
+                }
+                $branch[] = $element;
+            }
+            //
+            //
+            $result[$row->parent_id][$row->id]["name"]=$row->name;
+            $this->GetTree($row->id, $result);
+        }
+        return $result;
+
     }
 }

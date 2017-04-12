@@ -16,6 +16,6 @@ return [
     '/task2/create' => 'ControllerTask2@create',
 
     //Страница задания 3
-    '/task3/reset' => 'ControllerTask3@resetTree',
-    '/task3/tree' => 'ControllerTask3@getTree',
+    '/task3/reset' => 'ControllerTask3@reset',
+    '/task3/tree' => 'ControllerTask3@tree',
 ];
