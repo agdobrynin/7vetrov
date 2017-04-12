@@ -20,6 +20,7 @@ class ControllerTask3 extends Controller{
      */
     public function reset()
     {
+
         $Tree = new Tree();
         //Создать таблицу 5 уровней, от 4 до 8 детей в узле
         header('Content-Type: application/json');
@@ -37,7 +38,7 @@ class ControllerTask3 extends Controller{
     {
         $Tree = new Tree();
         header('Content-Type: application/json');
-        return json_encode($Tree->GetTree());
+        return json_encode($Tree->getTree());
     }
 
 

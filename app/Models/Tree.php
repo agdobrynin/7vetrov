@@ -42,6 +42,9 @@ class Tree extends Model{
 
     /**
      * Генерация дерева
+     *
+     *  Рекурсивный метод для генерации дерева
+     *
      * @param integer $parent_id родительский id
      * @param integer $min_child минимальное кол-во детей
      * @param integer $max_cild  максимальное кол-во детей
@@ -70,62 +73,26 @@ class Tree extends Model{
         }
         return true;
     }
-
-    /*
-    $arr = array(
-      array('id'=>100, 'parentid'=>0, 'name'=>'a'),
-      array('id'=>101, 'parentid'=>100, 'name'=>'a'),
-      array('id'=>102, 'parentid'=>101, 'name'=>'a'),
-      array('id'=>103, 'parentid'=>101, 'name'=>'a'),
-    );
-
-    $new = array();
-    foreach ($arr as $a){
-        $new[$a['parentid']][] = $a;
-    }
-    $tree = createTree($new, array($arr[0]));
-    print_r($tree);
-
-    function createTree(&$list, $parent){
-        $tree = array();
-        foreach ($parent as $k=>$l){
-            if(isset($list[$l['id']])){
-                $l['children'] = createTree($list, $list[$l['id']]);
-            }
-            $tree[] = $l;
-        }
-        return $tree;
-    }
-    */
-
-    protected function GetAllElements(){
-        $SQL = "SELECT * FROM ".$this->table;
-        return DB::run($SQL)->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function GetTree($parent_id = 0, &$result = [] )
+    /**
+     * Получить массив ввиде дерева
+     * @see http://blog.tekerson.com/2009/03/03/converting-a-flat-array-with-parent-ids-to-a-nested-tree/
+     *
+     * @return array
+     */
+    public function getTree()
     {
-        print_r($this->GetAllElements());
-        return 0;
-        $SQL = "SELECT * FROM ".$this->table." WHERE parent_id = ?";
-        $stmt = DB::run($SQL, [$parent_id]);
-        while ($row = $stmt->fetch(\PDO::FETCH_LAZY)){
-            print $row->parent_id." | ".$row->id."\n";
-            //array_push($new_list, $next['uid']);
-            //
-            if ($element['parent_id'] == $parentId) {
-                $children = buildTree($elements, $element['id']);
-                if ($children) {
-                    $element['children'] = $children;
-                }
-                $branch[] = $element;
-            }
-            //
-            //
-            $result[$row->parent_id][$row->id]["name"]=$row->name;
-            $this->GetTree($row->id, $result);
+        $SQL = "SELECT * FROM ".$this->table;
+        $flat = DB::run($SQL)->fetchAll(\PDO::FETCH_ASSOC);
+        $indexed = [];
+        foreach ($flat as $index => $row) {
+            $indexed[$row['id']] = $row;
+            $indexed[$row['id']]['child'] = array();
         }
-        return $result;
 
+        foreach ($indexed as $id => $row) {
+            $indexed[$row['parent_id']]['child'][$id] =& $indexed[$id];
+        }
+        return $indexed;
     }
+
 }
