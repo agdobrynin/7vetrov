@@ -35,6 +35,7 @@ class Tree extends Model{
         if( DB::query($SQL) === false ){
             throw new \Exception("Ошибка создания таблицы ".$this->table. " [ ".DB::errorText()." ]");
         }
+
         //Паполнить рандомными значениями с помощью rand ( int $min , int $max )
         $this->GenerateChild( 0, $min_child, $max_child, 0, $max_level);
         return DB::run("SELECT count(id) FROM ".$this->table)->fetchColumn();
@@ -67,9 +68,11 @@ class Tree extends Model{
 
         foreach ($child as $element){
             $stmt->execute($element);
-            if($level == $max_level) return true;
             $level++;
+            if($level == $max_level) return true;
+
             $this->GenerateChild(DB::lastInsertId(), $min_child, $max_cild , $level , $max_level );
+
         }
         return true;
     }
@@ -83,16 +86,28 @@ class Tree extends Model{
     {
         $SQL = "SELECT * FROM ".$this->table;
         $flat = DB::run($SQL)->fetchAll(\PDO::FETCH_ASSOC);
-        $indexed = [];
+
+        if( count($flat) == 0 ){
+            return null;
+        }
+
+        $indexed = [[
+            'id'=>null,
+            'parent_id'=>null,
+            'name'=>''
+        ]];
         foreach ($flat as $index => $row) {
             $indexed[$row['id']] = $row;
             $indexed[$row['id']]['child'] = array();
         }
-
+        $root = null;
         foreach ($indexed as $id => $row) {
             $indexed[$row['parent_id']]['child'][$id] =& $indexed[$id];
+            if ($row['parent_id'] === null) {
+                $root = $id;
+            }
         }
-        return $indexed;
+        return $indexed[$root]['child'];
     }
 
 }

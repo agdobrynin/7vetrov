@@ -11,7 +11,7 @@ class App{
       protected $uri;
 
       protected $view;
-      
+
 
       /**
        *
@@ -77,7 +77,7 @@ class App{
           if( $key === null ){
             return $this->request;
           }else{
-            return $this->request[$key];
+            return @$this->request[$key];
           }
       }
       /**

@@ -22,11 +22,20 @@ class ControllerTask3 extends Controller{
     {
 
         $Tree = new Tree();
-        //Создать таблицу 5 уровней, от 4 до 8 детей в узле
+        //Уровней вложенности
+        $levels = self::Request("levels");
+        $levels = $levels ? $levels : 6;
+        //Минисмально потомков
+        $min_child = 2;
+        //Максимально потомков
+        $max_child = (int)self::Request("childs");
+        $max_child = $max_child > $min_child ? $max_child : 10;
+        //Создать таблицу
+        $cnt = $Tree->CreateTable($levels , $min_child, $max_child);
         header('Content-Type: application/json');
         return json_encode([
             "title" => "Сообщение",
-            "body" => "Сгенерировано дерево c ".$Tree->CreateTable(5 , 4, 8)." элементами."
+            "body" => "Сгенерировано дерево c ".$cnt." элементами. Уровней: $levels , потомков от: $min_child до $max_child"
         ]);
     }
 
