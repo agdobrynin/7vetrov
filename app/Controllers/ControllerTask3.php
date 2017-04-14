@@ -11,7 +11,9 @@ class ControllerTask3 extends Controller{
     public function index()
     {
         $title=$title = $this->title;
-        return self::View('task3.php', compact(["title"]));
+        $Tree = new Tree();
+        $tree_count = $Tree->getTreeCount();
+        return self::View('task3.php', compact(["title", "tree_count"]));
     }
 
     /**

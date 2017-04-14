@@ -83,7 +83,11 @@ include('_header.php');
         <div class="panel panel-default">
             <div class="panel-heading">Древо объектов/записей</div>
             <div class="panel-body tree">
-                Не загружено
+                <?php if( $tree_count ){ ?>
+                    Не загружено. Всего в базе <?php print $tree_count; ?> элементов.
+                <?php } else { ?>
+                    База элементов еще не сгенерирована.
+                <?php } ?>
             </div>
         </div>
     </div>

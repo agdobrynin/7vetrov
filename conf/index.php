@@ -5,7 +5,7 @@ return [
   //Путь к файлу роутов
   "routes" => __DIR__."/routes.php",
   //драйвер БД - конфигурация в conf/database.php
-  "db_driver" => "sqlite",
+  "db_driver" => "mysql",
   //Конфигурация коннекта к БД
   "db_connection" => [
       //для БД SQLite

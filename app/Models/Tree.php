@@ -57,7 +57,7 @@ class Tree extends Model{
         $child = [];
         $count = rand($min_child, $max_cild);
         for($i=0; $i < $count; $i++){
-            $child[]=[$parent_id, Utils::RandString()];
+            $child[]=[$parent_id, "Node ".$level."_".($i+1)]; //Utils::RandString()
         }
         //множественное исполнение подготовленных выражений
         $SQL = "INSERT INTO ".$this->table."(parent_id, name) VALUES (?, ?)";
@@ -76,6 +76,7 @@ class Tree extends Model{
         }
         return true;
     }
+
     /**
      * Получить массив ввиде дерева
      * @see http://blog.tekerson.com/2009/03/03/converting-a-flat-array-with-parent-ids-to-a-nested-tree/
@@ -108,6 +109,24 @@ class Tree extends Model{
             }
         }
         return $indexed[$root]['child'];
+    }
+
+    /**
+     * Получить количество записей в таблице дерева
+     * @return integer кол-во записей
+     */
+    public function getTreeCount()
+    {
+        return DB::run("SELECT count(id) FROM ".$this->table)->fetchColumn();
+    }
+
+    /**
+     * Поуччение данных из дерева задание #4
+     * @return [type] [description]
+     */
+    public function getTreeTask4()
+    {
+
     }
 
 }
