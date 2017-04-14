@@ -15,7 +15,7 @@ class Controller{
 
     public static function View( $view, $data=null)
     {
-
+        $data["uri"] = self::$app->Uri();
         return self::$app->GetView()->Render($view, $data);
     }
 

@@ -66,7 +66,7 @@ function BuildTree(el, data, next){
     }
     for(a in data){
         var li = document.createElement("li");
-        $(li).html(data[a].name);
+        $(li).html(data[a].name + " (id= "+data[a].id+" / parent_id= "+data[a].parent_id+") ");
         ul.appendChild(li);
         BuildTree(el, data[a].child, ul);
     }

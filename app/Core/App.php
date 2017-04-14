@@ -96,6 +96,7 @@ class App{
       public function Run()
       {
           $this->uri = $this->Uri();
+          $uri = $this->uri;
           foreach ($this->routes as $route => $action) {
               if ( $route == $this->uri ){
                   print call_user_func_array( $action, [] );

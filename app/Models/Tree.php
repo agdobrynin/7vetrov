@@ -57,7 +57,7 @@ class Tree extends Model{
         $child = [];
         $count = rand($min_child, $max_cild);
         for($i=0; $i < $count; $i++){
-            $child[]=[$parent_id, "Node ".$level."_".($i+1)]; //Utils::RandString()
+            $child[]=[$parent_id, Utils::RandString(5)]; 
         }
         //множественное исполнение подготовленных выражений
         $SQL = "INSERT INTO ".$this->table."(parent_id, name) VALUES (?, ?)";

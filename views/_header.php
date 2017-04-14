@@ -39,12 +39,12 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
               <ul class="nav navbar-nav ">
-                  <li><a href="/task1">Задание 1</a></li>
-                  <li><a href="/task2">Задание 2</a></li>
-                  <li><a href="/task3">Задание 3</a></li>
-                  <li><a href="/task45">Задание 4 - 5</a></li>
-                  <li><a href="/task6">Задание 6</a></li>
-                  <li><a href="/task7">Задание 7</a></li>
+                  <li <?="/task1"==$uri?"class='active'":""; ?>><a href="/task1">Задание 1</a></li>
+                  <li <?="/task2"==$uri?"class='active'":""; ?>><a href="/task2">Задание 2</a></li>
+                  <li <?="/task3"==$uri?"class='active'":""; ?>><a href="/task3">Задание 3</a></li>
+                  <li <?="/task45"==$uri?"class='active'":""; ?>><a href="/task45">Задание 4 - 5</a></li>
+                  <li <?="/task6"==$uri?"class='active'":""; ?>><a href="/task6">Задание 6</a></li>
+                  <li <?="/task7"==$uri?"class='active'":""; ?>><a href="/task7">Задание 7</a></li>
               </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
